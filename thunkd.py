@@ -4,6 +4,40 @@ import requests
 from argparse import ArgumentParser
 
 
+def purge(data: dict) -> dict:
+    del data["data"]["user"]
+    project = data["data"]["project"]
+    del project["id"]
+    for key in project["blockly"].keys():
+        del project["blockly"][key]["code"]
+        del project["blockly"][key]["appVariableDefCode"]
+    del project["blocklyStringLength"]
+    del project["componentStringLength"]
+    del project["createdAt"]
+    del project["email"]
+    del project["hash"]
+    del project["isArchiveProjectFileUsed"]
+    del project["isHiddenFromPublicGallery"]
+    del project["isLegacy"]
+    del project["isOwner"]
+    del project["isPublic"]
+    del project["isQRCodeScanned"]
+    del project["isLiveTesting"]
+    del project["settings"]["packageName"]
+    del project["projectSettings"]["packageName"]
+    del project["appId"]
+    del project["readOnly"]
+    del project["shares"]
+    del project["versions"]
+    del project["schemaVersion"]
+    del project["projectSnapshotsMetaData"]
+    del project["projectSnapshotParentId"]
+    del project["projectSnapshotParent"]
+    del project["updatedAt"]
+    del project["username"]
+    return data
+
+
 def build_cookies() -> dict[str, str]:
     config = read_config()
     return {
@@ -69,8 +103,8 @@ def pull(project_id: str, file_path: str, verbose: bool) -> None:
         print(f"r.status_code = {r.status_code}")
 
     # Write the output.
-    with open(file_path, "wb") as f:
-        f.write(r.content)
+    with open(file_path, "w") as f:
+        json.dump(purge(json.loads(r.content)), f, indent=4)
 
 
 def push(project_id: str, file_path: str, verbose: bool) -> None:
