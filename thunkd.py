@@ -69,8 +69,8 @@ def pull(project_id: str, file_path: str, verbose: bool) -> None:
         print(f"r.status_code = {r.status_code}")
 
     # Write the output.
-    with open(file_path, "wb") as f:
-        f.write(r.content)
+    with open(file_path, "w") as f:
+        json.dump(json.loads(r.content), f, indent=4)
 
 
 def push(project_id: str, file_path: str, verbose: bool) -> None:
