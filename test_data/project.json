@@ -1,0 +1,551 @@
+{
+    "data": {
+        "project": {
+            "id": "6490bcfeece071726a3f0d73",
+            "apiComponents": {
+                "ApiContainer": {
+                    "id": "ApiContainer",
+                    "children": []
+                }
+            },
+            "assets": {
+                "6490bd25664db026a82baaef": {
+                    "externalStorageType": "GCS",
+                    "_id": "6490bd25664db026a82baaef",
+                    "size": "39169",
+                    "mimetype": "image/png",
+                    "encoding": "7bit",
+                    "originalname": "calgram-low-resolution-color-logo.png",
+                    "backendURI": "/project/6490bcfeece071726a3f0d73/getasset/6490bd25664db026a82baaef",
+                    "name": "calgram-low-resolution-color-logo.png",
+                    "externalName": "users/64663e07c3b69fb6b4a8befa/projects/6490bcfeece071726a3f0d73/assets/6490bd25664db026a82baaef",
+                    "createdAt": "2023-06-19T20:40:05.587Z",
+                    "updatedAt": "2023-06-19T20:40:05.587Z",
+                    "__v": 0,
+                    "signedUrl": "https://storage.googleapis.com/thunkable-x-production/users%2F64663e07c3b69fb6b4a8befa%2Fprojects%2F6490bcfeece071726a3f0d73%2Fassets%2F6490bd25664db026a82baaef?GoogleAccessId=thunkable-ios%40thunkable-ios.iam.gserviceaccount.com&Expires=1687380006&Signature=fop4zYV3Vp%2FJCT3o%2FK6G4DzABW9CaIRtd%2BO4Uru2zVAV1DEdAgSH%2BId2VjLFzYXn3TeDmM%2Be97OzEW46ZRDKzmC2eWNh3tEGDdxGqO4avV4Q15ecYMcrJK6oWmyMNOJOC5OL9Lq4oZiM9CN3W5xI8HfIu4Wepp9T60f8Qq%2BmDLUfmCkS8b8N1TGalPntv%2FwIqOnE85W8Ap19PDfaIGWgSRTa%2B0tp8csBFxYdFImoEewwaHeSpwilgx6ZqRFq4opNtw9InVBJKuW44SI%2FlWiijnvoFR2QXIMUjZUdGbADs6HG3BaXF%2BWgEVD6ba%2BNZHZwT5D9MGW%2FjDW4xEihOdjYHw%3D%3D",
+                    "signedUrlExpirationTime": 1687380005593
+                }
+            },
+            "backendUpgradeVersion": 19,
+            "blockly": {
+                "8aae17e5-5f0f-4c08-b479-0e09acb5675f": {
+                    "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables><block type=\"variables_def\" id=\"`QQWe:^YA=z@C0[634w3\" x=\"348\" y=\"42\"><mutation no_input=\"false\" variable_uuid=\"debee425-1e0d-4cb6-ba16-c7ff073a51e9\" variable_name=\"name\" variable_scope=\"APP\"></mutation><field name=\"SCOPE\">APP</field><field name=\"NAME\">name</field><value name=\"VALUE\"><block type=\"math_number\" id=\"%uElCq]JD#y1O!;,FIsb\"><field name=\"NUM\">0</field></block></value></block><block type=\"component_event\" id=\"UN#4h|^xsa3V(}e)Mof|\" x=\"349\" y=\"85\"><mutation component_name=\"Button1\" component_type=\"Button\" parent_id=\"undefined\" event_id=\"Click\" was_updated=\"true\"></mutation><field name=\"component_id\">f40bc82c-71be-49da-96ca-12dce598a733</field><field name=\"event_id\">Click</field><statement name=\"input_do\"><block type=\"variables_set\" id=\"9,c4MMgU_^SvdSPA*w~*\"><mutation saved_name=\"app variable name\"></mutation><field name=\"VAR\">debee425-1e0d-4cb6-ba16-c7ff073a51e9</field><value name=\"VALUE\"><block type=\"math_arithmetic\" id=\"Y@fb3~UX9}TMG%z:6u:+\"><field name=\"OP\">ADD</field><value name=\"A\"><shadow type=\"math_number\" id=\"1y2g9KOL*;Xp~+U~do)u\"><field name=\"NUM\">1</field></shadow><block type=\"variables_get\" id=\"VU7T=^Jp-+wq%ITioYXI\"><mutation saved_name=\"app variable name\"></mutation><field name=\"VAR\">debee425-1e0d-4cb6-ba16-c7ff073a51e9</field></block></value><value name=\"B\"><shadow type=\"math_number\" id=\"eY~jcam`Rzej.dlrySYo\"><field name=\"NUM\">1</field></shadow></value></block></value></block></statement></block></xml>",
+                    "code": "function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }\n\nfunction _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, \"next\", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, \"throw\", err); } _next(undefined); }); }; }\n\nfunction getComponentEventList(componentId, event, componentTypeFromGenericBlock) {\n  var _this = this;\n\n  var componentIdOrTypeToEventCode = {\n    'f40bc82c-71be-49da-96ca-12dce598a733': {\n      'Click': function Click() {\n        return [/*#__PURE__*/function () {\n          var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(component) {\n            var _this2 = this;\n\n            return regeneratorRuntime.wrap(function _callee$(_context) {\n              while (1) {\n                switch (_context.prev = _context.next) {\n                  case 0:\n                    _context.next = 2;\n                    return new Promise(function (setStateResolve) {\n                      _this2.setState(function (prevState, props) {\n                        var nextState = this.spreadCopy(prevState);\n                        this.setAppVariableValue && this.setAppVariableValue('name', parseFloat(this.getAppVariableValue && this.getAppVariableValue('name')) + parseFloat(1));\n                        return nextState;\n                      }, setStateResolve);\n                    });\n\n                  case 2:\n                  case \"end\":\n                    return _context.stop();\n                }\n              }\n            }, _callee);\n          }));\n\n          return function (_x) {\n            return _ref.apply(this, arguments);\n          };\n        }().bind(_this)];\n      }\n    }\n  };\n  var eventListFunctionFromGeneric = [];\n\n  if (componentIdOrTypeToEventCode[componentTypeFromGenericBlock] && componentIdOrTypeToEventCode[componentTypeFromGenericBlock][event]) {\n    eventListFunctionFromGeneric = componentIdOrTypeToEventCode[componentTypeFromGenericBlock][event]();\n  }\n\n  var eventListFunctionFromSpecific = [];\n\n  if (componentIdOrTypeToEventCode[componentId] && componentIdOrTypeToEventCode[componentId][event]) {\n    eventListFunctionFromSpecific = componentIdOrTypeToEventCode[componentId][event]();\n  }\n\n  return eventListFunctionFromSpecific.concat(eventListFunctionFromGeneric);\n}\n\nthis.setComponentEventListFunction(getComponentEventList);\n\nfunction convertUndefinedToEmptyString(value) {\n  return value === undefined ? \"\" : value;\n}\n\n(function () {\n  var componentId = \"f40bc82c-71be-49da-96ca-12dce598a733\";\n  var componentIdToSet = typeof moduleComponentId !== 'undefined' && typeof moduleTypeId !== 'undefined' && false ? moduleComponentId : \"f40bc82c-71be-49da-96ca-12dce598a733\";\n  this.setPropDirectly(componentIdToSet, 'Click', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {\n    var _this3 = this;\n\n    return regeneratorRuntime.wrap(function _callee2$(_context2) {\n      while (1) {\n        switch (_context2.prev = _context2.next) {\n          case 0:\n            _context2.next = 2;\n            return Promise.all(getComponentEventList.call(this, componentId, 'Click', 'Button').map(function (eventFxn) {\n              return new Promise(eventFxn.bind(_this3, componentId));\n            }));\n\n          case 2:\n          case \"end\":\n            return _context2.stop();\n        }\n      }\n    }, _callee2, this);\n  })).bind(this), state);\n}).call(this);\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInVua25vd24iXSwibmFtZXMiOlsiZ2V0Q29tcG9uZW50RXZlbnRMaXN0IiwiY29tcG9uZW50SWQiLCJldmVudCIsImNvbXBvbmVudFR5cGVGcm9tR2VuZXJpY0Jsb2NrIiwiY29tcG9uZW50SWRPclR5cGVUb0V2ZW50Q29kZSIsImNvbXBvbmVudCIsIlByb21pc2UiLCJzZXRTdGF0ZVJlc29sdmUiLCJzZXRTdGF0ZSIsInByZXZTdGF0ZSIsInByb3BzIiwibmV4dFN0YXRlIiwic3ByZWFkQ29weSIsInNldEFwcFZhcmlhYmxlVmFsdWUiLCJwYXJzZUZsb2F0IiwiZ2V0QXBwVmFyaWFibGVWYWx1ZSIsImJpbmQiLCJldmVudExpc3RGdW5jdGlvbkZyb21HZW5lcmljIiwiZXZlbnRMaXN0RnVuY3Rpb25Gcm9tU3BlY2lmaWMiLCJjb25jYXQiLCJzZXRDb21wb25lbnRFdmVudExpc3RGdW5jdGlvbiIsImNvbnZlcnRVbmRlZmluZWRUb0VtcHR5U3RyaW5nIiwidmFsdWUiLCJ1bmRlZmluZWQiLCJjb21wb25lbnRJZFRvU2V0IiwibW9kdWxlQ29tcG9uZW50SWQiLCJtb2R1bGVUeXBlSWQiLCJzZXRQcm9wRGlyZWN0bHkiLCJhbGwiLCJjYWxsIiwibWFwIiwiZXZlbnRGeG4iLCJzdGF0ZSJdLCJtYXBwaW5ncyI6Ijs7OztBQUFBLFNBQVNBLHFCQUFULENBQStCQyxXQUEvQixFQUE0Q0MsS0FBNUMsRUFBbURDLDZCQUFuRCxFQUFrRjtBQUFBOztBQUN4RSxNQUFNQyw0QkFBNEIsR0FBRztBQUNuQyw0Q0FBeUM7QUFBQyxlQUFVO0FBQUEsZUFBTSxDQUFDO0FBQUEsOEZBQWVDLFNBQWY7QUFBQTs7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUEsMkJBRTlELElBQUlDLE9BQUosQ0FBWSxVQUFDQyxlQUFELEVBQXFCO0FBQ3RDLHNCQUFBLE1BQUksQ0FBQ0MsUUFBTCxDQUFjLFVBQVNDLFNBQVQsRUFBb0JDLEtBQXBCLEVBQTJCO0FBQ3ZDLDRCQUFNQyxTQUFTLEdBQUcsS0FBS0MsVUFBTCxDQUFnQkgsU0FBaEIsQ0FBbEI7QUFDSiw2QkFBS0ksbUJBQUwsSUFBNEIsS0FBS0EsbUJBQUwsQ0FBeUIsTUFBekIsRUFBaUNDLFVBQVUsQ0FBRSxLQUFLQyxtQkFBTCxJQUE0QixLQUFLQSxtQkFBTCxDQUF5QixNQUF6QixDQUE5QixDQUFWLEdBQStFRCxVQUFVLENBQUMsQ0FBRCxDQUExSCxDQUE1QjtBQUVJLCtCQUFPSCxTQUFQO0FBQ0QsdUJBTEQsRUFLR0osZUFMSDtBQU1ELHFCQVBNLENBRjhEOztBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBOztBQUFBO0FBQUE7QUFBQTtBQUFBLFlBV3JFUyxJQVhxRSxDQVdoRSxLQVhnRSxDQUFELENBQU47QUFBQTtBQUFYO0FBRE4sR0FBckM7QUFlQSxNQUFJQyw0QkFBNEIsR0FBRyxFQUFuQzs7QUFDQSxNQUFJYiw0QkFBNEIsQ0FBQ0QsNkJBQUQsQ0FBNUIsSUFDQUMsNEJBQTRCLENBQUNELDZCQUFELENBQTVCLENBQTRERCxLQUE1RCxDQURKLEVBQ3dFO0FBQ3RFZSxJQUFBQSw0QkFBNEIsR0FBR2IsNEJBQTRCLENBQUNELDZCQUFELENBQTVCLENBQTRERCxLQUE1RCxHQUEvQjtBQUNEOztBQUVELE1BQUlnQiw2QkFBNkIsR0FBRyxFQUFwQzs7QUFDQSxNQUFJZCw0QkFBNEIsQ0FBQ0gsV0FBRCxDQUE1QixJQUNGRyw0QkFBNEIsQ0FBQ0gsV0FBRCxDQUE1QixDQUEwQ0MsS0FBMUMsQ0FERixFQUNvRDtBQUNwRGdCLElBQUFBLDZCQUE2QixHQUFHZCw0QkFBNEIsQ0FBQ0gsV0FBRCxDQUE1QixDQUEwQ0MsS0FBMUMsR0FBaEM7QUFDRDs7QUFFQyxTQUFPZ0IsNkJBQTZCLENBQUNDLE1BQTlCLENBQXFDRiw0QkFBckMsQ0FBUDtBQUNIOztBQUNELEtBQUtHLDZCQUFMLENBQW1DcEIscUJBQW5DOztBQUlOLFNBQVNxQiw2QkFBVCxDQUF1Q0MsS0FBdkMsRUFBOEM7QUFBRSxTQUFRQSxLQUFLLEtBQUtDLFNBQVYsR0FBc0IsRUFBdEIsR0FBMkJELEtBQW5DO0FBQTRDOztBQUc1RixDQUFDLFlBQVc7QUFDTixNQUFNckIsV0FBVyxHQUFHLHNDQUFwQjtBQUVBLE1BQU11QixnQkFBZ0IsR0FBSSxPQUFPQyxpQkFBUCxLQUE2QixXQUE3QixJQUE0QyxPQUFPQyxZQUFQLEtBQXdCLFdBQXBFLElBQW1GLEtBQXBGLEdBQ3JCRCxpQkFEcUIsR0FDRCxzQ0FEeEI7QUFHQSxPQUFLRSxlQUFMLENBQXFCSCxnQkFBckIsRUFBdUMsT0FBdkMsRUFDRjtBQUFBOztBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQSxtQkFDUWxCLE9BQU8sQ0FBQ3NCLEdBQVIsQ0FBYTVCLHFCQUFxQixDQUFDNkIsSUFBdEIsQ0FBMkIsSUFBM0IsRUFBaUM1QixXQUFqQyxFQUE4QyxPQUE5QyxFQUF1RCxRQUF2RCxDQUFELENBQW1FNkIsR0FBbkUsQ0FDaEIsVUFBQUMsUUFBUTtBQUFBLHFCQUFJLElBQUl6QixPQUFKLENBQWF5QixRQUFRLENBQUNmLElBQVQsQ0FBYyxNQUFkLEVBQW9CZixXQUFwQixDQUFiLENBQUo7QUFBQSxhQURRLENBQVosQ0FEUjs7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQSxNQUdFZSxJQUhGLENBR08sSUFIUCxDQURFLEVBSVlnQixLQUpaO0FBTUQsQ0FaTCxFQVlPSCxJQVpQLENBWVksSUFaWiIsInNvdXJjZXNDb250ZW50IjpbImZ1bmN0aW9uIGdldENvbXBvbmVudEV2ZW50TGlzdChjb21wb25lbnRJZCwgZXZlbnQsIGNvbXBvbmVudFR5cGVGcm9tR2VuZXJpY0Jsb2NrKSB7XG4gICAgICAgICAgY29uc3QgY29tcG9uZW50SWRPclR5cGVUb0V2ZW50Q29kZSA9IHtcbiAgICAgICAgICAgICdmNDBiYzgyYy03MWJlLTQ5ZGEtOTZjYS0xMmRjZTU5OGE3MzMnIDogeydDbGljaycgOiAoKSA9PiBbYXN5bmMgZnVuY3Rpb24oY29tcG9uZW50KSB7XG5cbiAgYXdhaXQgKG5ldyBQcm9taXNlKChzZXRTdGF0ZVJlc29sdmUpID0+IHtcbiAgICB0aGlzLnNldFN0YXRlKGZ1bmN0aW9uKHByZXZTdGF0ZSwgcHJvcHMpIHtcbiAgICAgIGNvbnN0IG5leHRTdGF0ZSA9IHRoaXMuc3ByZWFkQ29weShwcmV2U3RhdGUpO1xuICB0aGlzLnNldEFwcFZhcmlhYmxlVmFsdWUgJiYgdGhpcy5zZXRBcHBWYXJpYWJsZVZhbHVlKCduYW1lJywgcGFyc2VGbG9hdCgodGhpcy5nZXRBcHBWYXJpYWJsZVZhbHVlICYmIHRoaXMuZ2V0QXBwVmFyaWFibGVWYWx1ZSgnbmFtZScpKSkgICsgIHBhcnNlRmxvYXQoMSkpO1xuXG4gICAgICByZXR1cm4gbmV4dFN0YXRlO1xuICAgIH0sIHNldFN0YXRlUmVzb2x2ZSk7XG4gIH0pKTtcblxufS5iaW5kKHRoaXMpXX1cbiAgICAgICAgICB9XG5cbiAgICAgICAgICBsZXQgZXZlbnRMaXN0RnVuY3Rpb25Gcm9tR2VuZXJpYyA9IFtdO1xuICAgICAgICAgIGlmIChjb21wb25lbnRJZE9yVHlwZVRvRXZlbnRDb2RlW2NvbXBvbmVudFR5cGVGcm9tR2VuZXJpY0Jsb2NrXSAmJlxuICAgICAgICAgICAgICBjb21wb25lbnRJZE9yVHlwZVRvRXZlbnRDb2RlW2NvbXBvbmVudFR5cGVGcm9tR2VuZXJpY0Jsb2NrXVtldmVudF0pIHtcbiAgICAgICAgICAgIGV2ZW50TGlzdEZ1bmN0aW9uRnJvbUdlbmVyaWMgPSBjb21wb25lbnRJZE9yVHlwZVRvRXZlbnRDb2RlW2NvbXBvbmVudFR5cGVGcm9tR2VuZXJpY0Jsb2NrXVtldmVudF0oKTtcbiAgICAgICAgICB9XG5cbiAgICAgICAgICBsZXQgZXZlbnRMaXN0RnVuY3Rpb25Gcm9tU3BlY2lmaWMgPSBbXTtcbiAgICAgICAgICBpZiAoY29tcG9uZW50SWRPclR5cGVUb0V2ZW50Q29kZVtjb21wb25lbnRJZF0gJiZcbiAgICAgICAgICAgIGNvbXBvbmVudElkT3JUeXBlVG9FdmVudENvZGVbY29tcG9uZW50SWRdW2V2ZW50XSkge1xuICAgICAgICAgIGV2ZW50TGlzdEZ1bmN0aW9uRnJvbVNwZWNpZmljID0gY29tcG9uZW50SWRPclR5cGVUb0V2ZW50Q29kZVtjb21wb25lbnRJZF1bZXZlbnRdKCk7XG4gICAgICAgIH1cblxuICAgICAgICAgIHJldHVybiBldmVudExpc3RGdW5jdGlvbkZyb21TcGVjaWZpYy5jb25jYXQoZXZlbnRMaXN0RnVuY3Rpb25Gcm9tR2VuZXJpYyk7XG4gICAgICB9XG4gICAgICB0aGlzLnNldENvbXBvbmVudEV2ZW50TGlzdEZ1bmN0aW9uKGdldENvbXBvbmVudEV2ZW50TGlzdCk7XG5cblxuXG5mdW5jdGlvbiBjb252ZXJ0VW5kZWZpbmVkVG9FbXB0eVN0cmluZyh2YWx1ZSkgeyByZXR1cm4gKHZhbHVlID09PSB1bmRlZmluZWQgPyBcIlwiIDogdmFsdWUpOyB9XG5cblxuKGZ1bmN0aW9uKCkge1xuICAgICAgY29uc3QgY29tcG9uZW50SWQgPSBcImY0MGJjODJjLTcxYmUtNDlkYS05NmNhLTEyZGNlNTk4YTczM1wiO1xuXG4gICAgICBjb25zdCBjb21wb25lbnRJZFRvU2V0ID0gKHR5cGVvZiBtb2R1bGVDb21wb25lbnRJZCAhPT0gJ3VuZGVmaW5lZCcgJiYgdHlwZW9mIG1vZHVsZVR5cGVJZCAhPT0gJ3VuZGVmaW5lZCcgJiYgZmFsc2UpXG4gICAgICAgID8gbW9kdWxlQ29tcG9uZW50SWQgOiBcImY0MGJjODJjLTcxYmUtNDlkYS05NmNhLTEyZGNlNTk4YTczM1wiO1xuXG4gICAgICB0aGlzLnNldFByb3BEaXJlY3RseShjb21wb25lbnRJZFRvU2V0LCAnQ2xpY2snLFxuICAgIGFzeW5jIGZ1bmN0aW9uKCkge1xuICAgICAgYXdhaXQgUHJvbWlzZS5hbGwoKGdldENvbXBvbmVudEV2ZW50TGlzdC5jYWxsKHRoaXMsIGNvbXBvbmVudElkLCAnQ2xpY2snLCAnQnV0dG9uJykpLm1hcChcbiAgICAgICAgZXZlbnRGeG4gPT4gbmV3IFByb21pc2UgKGV2ZW50RnhuLmJpbmQodGhpcywgY29tcG9uZW50SWQsICkpKSlcbiAgICB9LmJpbmQodGhpcyksIHN0YXRlKTtcblxuICAgIH0pLmNhbGwodGhpcyk7XG4iXX0=",
+                    "appVariableDefCode": "\n\n\nfunction convertUndefinedToEmptyString(value) { return (value === undefined ? \"\" : value); }\n\n\nthis.initializeAppVariable && this.initializeAppVariable(\"name\", 0);\n",
+                    "permissions": {
+                        "android": [],
+                        "ios": []
+                    }
+                },
+                "34e0ccff-a37a-4dff-82ea-e9cb1e48c6db": {}
+            },
+            "blocklyStringLength": 12007,
+            "categories": [
+                "Developer Tools"
+            ],
+            "components": {
+                "children": [
+                    {
+                        "type": "Screen",
+                        "translatedName": "Screen",
+                        "reactType": "ViewWithProps",
+                        "properties": {
+                            "Height": "Fill container",
+                            "Width": "Fill container",
+                            "Layout": "column",
+                            "Justification": "center",
+                            "Alignment": "center",
+                            "Visible": true,
+                            "style": {
+                                "marginTop": 0,
+                                "marginBottom": 0,
+                                "marginLeft": 0,
+                                "marginRight": 0,
+                                "paddingTop": 0,
+                                "paddingBottom": 0,
+                                "paddingLeft": 0,
+                                "paddingRight": 0,
+                                "shadowColor": "rgba(0, 0, 0, 0)",
+                                "shadowOpacity": 0,
+                                "scaledShadowOpacity": 0,
+                                "shadowRadius": 0,
+                                "shadowOffset": {
+                                    "width": 0,
+                                    "height": 0
+                                },
+                                "flexDirection": "column",
+                                "justifyContent": "center",
+                                "alignItems": "center",
+                                "display": "flex"
+                            },
+                            "ShowStatusBar": true,
+                            "StatusBarStyle": "default",
+                            "TranslucentStatusBar": false,
+                            "StatusBarColor": "rgba(0,0,0,0.53)",
+                            "TabNavigationOptions": {
+                                "tabBarVisible": true
+                            },
+                            "TabNavigatorIcon": {},
+                            "DrawerNavigationOptions": {},
+                            "StackNavigationOptions": {
+                                "headerStyle": {}
+                            },
+                            "ScreenOrientation": "portrait",
+                            "DesignerHeight": 667,
+                            "DesignerWidth": 375,
+                            "ResponsiveWidth": 375,
+                            "isSimple": true,
+                            "navigationOptions": {
+                                "headerStyle": {}
+                            },
+                            "tabNavigationOptions": {}
+                        },
+                        "children": [
+                            {
+                                "type": "Button",
+                                "translatedName": "Button",
+                                "properties": {
+                                    "Text": "Button",
+                                    "TextColor": "#FFFFFF",
+                                    "FontSize": 16,
+                                    "CustomFont": "",
+                                    "BackgroundColor": "rgba(93, 122, 252, 100)",
+                                    "Height": 49,
+                                    "Width": 311,
+                                    "Visible": true,
+                                    "X": 32,
+                                    "Y": 34,
+                                    "RelativeX": 32,
+                                    "RelativeY": 34,
+                                    "ResizeMode": "STRETCH",
+                                    "style": {
+                                        "marginTop": 0,
+                                        "marginBottom": 0,
+                                        "marginLeft": 0,
+                                        "marginRight": 0,
+                                        "paddingTop": 0,
+                                        "paddingBottom": 0,
+                                        "paddingLeft": 0,
+                                        "paddingRight": 0,
+                                        "borderRadius": 15,
+                                        "shadowColor": "rgba(0, 0, 0, 0)",
+                                        "shadowOpacity": 0,
+                                        "scaledShadowOpacity": 0,
+                                        "shadowRadius": 0,
+                                        "shadowOffset": {
+                                            "width": 0,
+                                            "height": 0
+                                        },
+                                        "position": "absolute",
+                                        "left": "43.599995930989586%",
+                                        "top": "21.999627932615724%",
+                                        "display": "flex"
+                                    },
+                                    "FontBold": false,
+                                    "FontItalic": false,
+                                    "Raised": false,
+                                    "Disabled": false,
+                                    "ParentId": "8aae17e5-5f0f-4c08-b479-0e09acb5675f",
+                                    "position": "absolute",
+                                    "edgeOffsets": 34
+                                },
+                                "children": [],
+                                "id": "f40bc82c-71be-49da-96ca-12dce598a733",
+                                "thunkableVersion": 410,
+                                "name": "Button1"
+                            }
+                        ],
+                        "id": "8aae17e5-5f0f-4c08-b479-0e09acb5675f",
+                        "thunkableVersion": 410,
+                        "name": "Screen1"
+                    },
+                    {
+                        "type": "Screen",
+                        "translatedName": "Screen",
+                        "reactType": "ViewWithProps",
+                        "properties": {
+                            "Height": "Fill container",
+                            "Width": "Fill container",
+                            "Layout": "column",
+                            "Justification": "center",
+                            "Alignment": "center",
+                            "Visible": true,
+                            "style": {
+                                "marginTop": 0,
+                                "marginBottom": 0,
+                                "marginLeft": 0,
+                                "marginRight": 0,
+                                "paddingTop": 0,
+                                "paddingBottom": 0,
+                                "paddingLeft": 0,
+                                "paddingRight": 0,
+                                "shadowColor": "rgba(0, 0, 0, 0)",
+                                "shadowOpacity": 0,
+                                "scaledShadowOpacity": 0,
+                                "shadowRadius": 0,
+                                "shadowOffset": {
+                                    "width": 0,
+                                    "height": 0
+                                },
+                                "flexDirection": "column",
+                                "justifyContent": "center",
+                                "alignItems": "center",
+                                "display": "flex"
+                            },
+                            "ShowStatusBar": true,
+                            "StatusBarStyle": "default",
+                            "TranslucentStatusBar": false,
+                            "StatusBarColor": "rgba(0,0,0,0.53)",
+                            "TabNavigationOptions": {
+                                "tabBarVisible": true
+                            },
+                            "TabNavigatorIcon": {},
+                            "DrawerNavigationOptions": {},
+                            "StackNavigationOptions": {
+                                "headerStyle": {}
+                            },
+                            "ScreenOrientation": "portrait",
+                            "DesignerHeight": 667,
+                            "DesignerWidth": 375,
+                            "ResponsiveWidth": 375,
+                            "isSimple": true,
+                            "navigationOptions": {
+                                "headerStyle": {}
+                            },
+                            "tabNavigationOptions": {}
+                        },
+                        "children": [
+                            {
+                                "type": "Image",
+                                "translatedName": "Image",
+                                "properties": {
+                                    "Picture": "calgram-low-resolution-color-logo.png",
+                                    "resizeMode": "stretch",
+                                    "Height": 311,
+                                    "Width": 311,
+                                    "Visible": true,
+                                    "X": 32,
+                                    "Y": 267,
+                                    "RelativeX": 32,
+                                    "RelativeY": 267,
+                                    "ResizeMode": "STRETCH",
+                                    "style": {
+                                        "marginTop": 0,
+                                        "marginBottom": 0,
+                                        "marginLeft": 0,
+                                        "marginRight": 0,
+                                        "paddingTop": 0,
+                                        "paddingBottom": 0,
+                                        "paddingLeft": 0,
+                                        "paddingRight": 0,
+                                        "shadowColor": "rgba(0, 0, 0, 0)",
+                                        "shadowOpacity": 0,
+                                        "scaledShadowOpacity": 0,
+                                        "shadowRadius": 0,
+                                        "shadowOffset": {
+                                            "width": 0,
+                                            "height": 0
+                                        },
+                                        "position": "absolute",
+                                        "left": "34.586669921875%",
+                                        "top": "42.98913317999204%",
+                                        "display": "flex"
+                                    },
+                                    "capInsets": {},
+                                    "ParentId": "34e0ccff-a37a-4dff-82ea-e9cb1e48c6db",
+                                    "position": "absolute",
+                                    "edgeOffsets": 267
+                                },
+                                "children": [],
+                                "id": "fd5fd650-eef0-4735-a92c-62be0ef560d8",
+                                "thunkableVersion": 410,
+                                "name": "Image1"
+                            },
+                            {
+                                "type": "Label",
+                                "translatedName": "Label",
+                                "reactType": "Text",
+                                "properties": {
+                                    "Text": "Label",
+                                    "CustomFont": "",
+                                    "LineHeight": 1,
+                                    "Color": "rgba(0, 0, 0, 1)",
+                                    "Height": 45,
+                                    "Width": 311,
+                                    "Visible": true,
+                                    "X": 32,
+                                    "Y": 33,
+                                    "RelativeX": 32,
+                                    "RelativeY": 33,
+                                    "ResizeMode": "STRETCH",
+                                    "style": {
+                                        "color": "rgba(0, 0, 0, 1)",
+                                        "fontSize": 16,
+                                        "fontStyle": "normal",
+                                        "textShadowOffset": {},
+                                        "letterSpacing": 0,
+                                        "textDecorationLine": "none",
+                                        "textDecorationStyle": "solid",
+                                        "textDecorationColor": "rgba(0, 0, 0, 1)",
+                                        "writingDirection": "auto",
+                                        "marginTop": 0,
+                                        "marginBottom": 0,
+                                        "marginLeft": 0,
+                                        "marginRight": 0,
+                                        "paddingTop": 0,
+                                        "paddingBottom": 0,
+                                        "paddingLeft": 0,
+                                        "paddingRight": 0,
+                                        "flexWrap": "wrap",
+                                        "borderWidth": 0,
+                                        "borderRadius": 0,
+                                        "borderColor": "rgba(236, 237, 237, 1)",
+                                        "borderStyle": "solid",
+                                        "shadowColor": "rgba(0, 0, 0, 0)",
+                                        "shadowOpacity": 0,
+                                        "scaledShadowOpacity": 0,
+                                        "shadowRadius": 0,
+                                        "shadowOffset": {
+                                            "width": 0,
+                                            "height": 0
+                                        },
+                                        "position": "absolute",
+                                        "left": "32.56000569661458%",
+                                        "top": "7.756749371896083%",
+                                        "lineHeight": 1,
+                                        "display": "flex"
+                                    },
+                                    "ParentId": "34e0ccff-a37a-4dff-82ea-e9cb1e48c6db",
+                                    "position": "absolute",
+                                    "edgeOffsets": 33,
+                                    "children": "Label"
+                                },
+                                "children": [],
+                                "id": "42f03573-14d5-4618-a0a5-9753ad3a5646",
+                                "thunkableVersion": 410,
+                                "name": "Label1"
+                            }
+                        ],
+                        "id": "34e0ccff-a37a-4dff-82ea-e9cb1e48c6db",
+                        "thunkableVersion": 410,
+                        "name": "Screen2"
+                    },
+                    {
+                        "type": "Screen",
+                        "translatedName": "Screen",
+                        "reactType": "ViewWithProps",
+                        "properties": {
+                            "Height": "Fill container",
+                            "Width": "Fill container",
+                            "Layout": "column",
+                            "Justification": "center",
+                            "Alignment": "center",
+                            "Visible": true,
+                            "style": {
+                                "marginTop": 0,
+                                "marginBottom": 0,
+                                "marginLeft": 0,
+                                "marginRight": 0,
+                                "paddingTop": 0,
+                                "paddingBottom": 0,
+                                "paddingLeft": 0,
+                                "paddingRight": 0,
+                                "shadowColor": "rgba(0, 0, 0, 0)",
+                                "shadowOpacity": 0,
+                                "scaledShadowOpacity": 0,
+                                "shadowRadius": 0,
+                                "shadowOffset": {
+                                    "width": 0,
+                                    "height": 0
+                                },
+                                "flexDirection": "column",
+                                "justifyContent": "center",
+                                "alignItems": "center",
+                                "display": "flex"
+                            },
+                            "ShowStatusBar": true,
+                            "StatusBarStyle": "default",
+                            "TranslucentStatusBar": false,
+                            "StatusBarColor": "rgba(0,0,0,0.53)",
+                            "TabNavigationOptions": {
+                                "tabBarVisible": true
+                            },
+                            "TabNavigatorIcon": {},
+                            "DrawerNavigationOptions": {},
+                            "StackNavigationOptions": {
+                                "headerStyle": {}
+                            },
+                            "ScreenOrientation": "portrait",
+                            "DesignerHeight": 667,
+                            "DesignerWidth": 375,
+                            "ResponsiveWidth": 375,
+                            "isSimple": true,
+                            "navigationOptions": {
+                                "headerStyle": {}
+                            },
+                            "tabNavigationOptions": {}
+                        },
+                        "children": [],
+                        "id": "dbe92468-e707-42b9-975d-2c13b04085c2",
+                        "thunkableVersion": 410,
+                        "name": "Screen3"
+                    }
+                ]
+            },
+            "componentStringLength": 6209,
+            "createdAt": "1687207166233",
+            "figmaComponents": {},
+            "description": null,
+            "email": "calvin_higgins2@uri.edu",
+            "hash": "4bce0eb68b4f05ade20424d5f73e6aea0a7eeffd",
+            "icon": null,
+            "isArchiveProjectFileUsed": false,
+            "isHiddenFromPublicGallery": false,
+            "isLegacy": false,
+            "isOwner": true,
+            "isPublic": true,
+            "isQRCodeScanned": null,
+            "isLiveTesting": null,
+            "projectName": "Test",
+            "settings": {
+                "teamId": null,
+                "appName": null,
+                "packageName": "edu.uri.calvinhiggins2.test",
+                "icon": null,
+                "autoIncrementVersion": true,
+                "ignoreNotchArea": false,
+                "notchAreaColor": null,
+                "androidVersionName": "1",
+                "androidVersionCode": 1,
+                "iosVersionNumber": "1",
+                "iosBuildNumber": "1",
+                "firebaseAPIKey": null,
+                "firebaseDatabaseURL": null,
+                "stripePublishableKeyTest": null,
+                "stripePublishableKeyLive": null,
+                "stripeAccountId": null,
+                "stripeTestMode": true,
+                "isPublic": true,
+                "description": null,
+                "mobileTutorial": null,
+                "pushNotificationAndroidAppId": null,
+                "pushNotificationIOSAppId": null,
+                "pushNotificationGeolocationEnabled": null,
+                "yandexAPIKey": null,
+                "imageRecognizerServerURL": null,
+                "imageRecognizerSubscriptionKey": null,
+                "cloudName": null,
+                "cloudinaryAPIKey": null,
+                "cloudinaryAPISecret": null,
+                "permissions": {
+                    "ios": {}
+                },
+                "googleMapAPIKeyAndroid": null,
+                "googleMapAPIKeyIOS": null,
+                "googleOAuthiOSClientID": null,
+                "googleOAuthiOSURLScheme": null,
+                "googleOAuthWebClientID": null,
+                "appleOAuthWebClientID": null,
+                "appleOAuthWebRedirectURI": null,
+                "admobAppIdIOS": null,
+                "admobAppIdAndroid": null,
+                "admobUserTrackingUsageDescription": null,
+                "__typename": "ProjectSettings"
+            },
+            "projectSettings": {
+                "teamId": null,
+                "appName": null,
+                "packageName": "edu.uri.calvinhiggins2.test",
+                "icon": null,
+                "autoIncrementVersion": true,
+                "ignoreNotchArea": false,
+                "notchAreaColor": null,
+                "androidVersionName": "1",
+                "androidVersionCode": 1,
+                "iosVersionNumber": "1",
+                "iosBuildNumber": "1",
+                "firebaseAPIKey": null,
+                "firebaseDatabaseURL": null,
+                "stripePublishableKeyTest": null,
+                "stripePublishableKeyLive": null,
+                "stripeAccountId": null,
+                "stripeTestMode": true,
+                "isPublic": true,
+                "description": null,
+                "mobileTutorial": null,
+                "pushNotificationAndroidAppId": null,
+                "pushNotificationIOSAppId": null,
+                "pushNotificationGeolocationEnabled": null,
+                "yandexAPIKey": null,
+                "imageRecognizerServerURL": null,
+                "imageRecognizerSubscriptionKey": null,
+                "cloudName": null,
+                "cloudinaryAPIKey": null,
+                "cloudinaryAPISecret": null,
+                "permissions": {
+                    "ios": {}
+                },
+                "googleMapAPIKeyAndroid": null,
+                "googleMapAPIKeyIOS": null,
+                "googleOAuthiOSClientID": null,
+                "googleOAuthiOSURLScheme": null,
+                "googleOAuthWebClientID": null,
+                "appleOAuthWebClientID": null,
+                "appleOAuthWebRedirectURI": null,
+                "admobAppIdIOS": null,
+                "admobAppIdAndroid": null,
+                "admobUserTrackingUsageDescription": null,
+                "__typename": "ProjectSettings"
+            },
+            "hasAdmob": false,
+            "hasBluetoothLowEnergy": null,
+            "hasPushNotification": false,
+            "hasAssistant": null,
+            "storageSize": "0.04",
+            "dataSourceLinks": [],
+            "localDataSources": [],
+            "customProperties": [],
+            "appId": "86755edb8df5d88f52a24197f341250f124ec7e0615b07a992c1e543fb252569",
+            "modules": [],
+            "usesDragDropUi": true,
+            "totalCopy": "0",
+            "totalStar": "0",
+            "starAction": "star",
+            "variables": {
+                "debee425-1e0d-4cb6-ba16-c7ff073a51e9": {
+                    "scope": "APP",
+                    "name": "name",
+                    "screenId": "8aae17e5-5f0f-4c08-b479-0e09acb5675f"
+                }
+            },
+            "webAppSettings": null,
+            "webCompanionSettings": {
+                "customDomain": null,
+                "icon": null,
+                "webAppId": null,
+                "__typename": "WebCompanionSettings"
+            },
+            "frontendProperties": {
+                "componentTreeCollapsedMap": {},
+                "__typename": "FrontendProperties"
+            },
+            "defaultDesignerDevice": "PHONE",
+            "defaultDesignerOrientation": "PORTRAIT",
+            "readOnly": false,
+            "shares": [],
+            "versions": [],
+            "schemaVersion": 2,
+            "organization": null,
+            "projectSnapshotsMetaData": [],
+            "projectSnapshotParentId": null,
+            "projectSnapshotParent": null,
+            "updatedAt": "1687207261940",
+            "username": "calvin_higgins22s86r",
+            "__typename": "Project"
+        },
+        "user": {
+            "id": "64663e07c3b69fb6b4a8befa",
+            "__typename": "User"
+        }
+    }
+}
