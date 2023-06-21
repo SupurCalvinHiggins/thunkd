@@ -45,7 +45,7 @@ The Thunk token can be found in the "https://x.thunkable.com/" cookie under the 
 2. Press F12 to open the developer console.
 3. On the top bar, click on the Application tab.
 4. On the side bar, click on Cookies and then "https://x.thunkable.com/".
-5. Scroll to find the "thunk_token" field.
+5. Scroll to find the "thunk_token" field. The value is your Thunk token.
 
 ### How do I find my project ID?
 
