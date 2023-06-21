@@ -1,5 +1,5 @@
 # thunkd
-Simple command line tool to pull and push projects from Thunkable.
+Simple command line tool to pull and push projects to and from Thunkable.
 
 ## Installation
 
