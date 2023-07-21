@@ -50,3 +50,6 @@ The Thunk token can be found in the "https://x.thunkable.com/" cookie under the 
 ### How do I find my project ID?
 
 Open your Thunkable project and examine the URL. The project ID appears after the "https://x.thunkable.com/projects/" portion of the project URL. For example, if the project URL is "https://x.thunkable.com/projects/1234567890abcdef12345678/12345678-90ab-cdef-1234-567890abcdef/designer", the project ID is "1234567890abcdef12345678".
+
+### Why can I not see my API Keys and URLs to external sources?
+After a push, some changes such as adding a Firebase API key might not be visible in the Thunkable UI. However, those values will be a part of the project as long as they are present in the JSON. It is important to test the functionality of your app frequently to address any problems as soon as they arise.
