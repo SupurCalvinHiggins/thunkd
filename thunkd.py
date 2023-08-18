@@ -1,4 +1,5 @@
 import os
+import re
 import copy
 import json
 import glob
@@ -93,6 +94,12 @@ def to_modular_project(project: dict) -> dict:
     screen_id_to_name = {}
     for i, screen in enumerate(iproject["components"]["children"]):
         screen_name, screen_id = screen["name"], screen["id"]
+        if re.search("[^\w\- ]+", screen_name) is not None:
+            logging.fatal("Encountered invalid screen name.")
+            logging.fatal(f"\tscreen_name = {screen_name}")
+            logging.fatal(f"\tscreen_id = {screen_id}")
+            logging.info("The screen name cannot contain special characters besides '-' and '_'.")
+            exit(1)
         path = f"{screen_name}.{screen_id}.json"
         modular_project[path] = screen
         iproject["components"]["children"][i] = os.path.splitext(path)[0]
