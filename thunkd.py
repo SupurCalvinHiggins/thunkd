@@ -1,7 +1,9 @@
 import os
+import re
 import copy
 import json
 import glob
+import shutil
 import logging
 import argparse
 import requests
@@ -23,13 +25,13 @@ def load_xml(data: str) -> str:
     return data
 
 
-def write(file_path: str, data: str) -> None:
-    with open(file_path, "w") as f:
+def write(path: str, data: str) -> None:
+    with open(path, "w") as f:
         f.write(data)
 
 
-def read(file_path: str) -> str:
-    with open(file_path, "r") as f:
+def read(path: str) -> str:
+    with open(path, "r") as f:
         return f.read()
 
 
@@ -40,23 +42,34 @@ def build_config_path() -> str:
 
 def read_config() -> dict:
     path = build_config_path()
-    return load_json(read(file_path=path))
+    return load_json(read(path=path))
+    
+
+def safe_read_config() -> dict:
+    try:
+        config = read_config()
+        if "thunk_token" not in config: raise
+        return config
+    except:
+        logging.fatal("Failed to load the configuration file.")
+        logging.info("The thunk_token might not be set. Set the thunk_token.")
+        exit(1)
 
 
 def write_config(config: dict) -> None:
     path = build_config_path()
-    write(file_path=path, data=dump_json(config))
+    write(path=path, data=dump_json(config))
 
 
 def read_modular_project(project_path: str) -> dict:
     modular_project = {}
     ext_to_load = {".json": load_json, ".xml": load_xml}
     search_path = os.path.join(project_path, "*.*")
-    for file_path in glob.glob(search_path):
-        file_name = os.path.basename(file_path)
+    for path in glob.glob(search_path):
+        file_name = os.path.basename(path)
         _, ext = os.path.splitext(file_name)
         load_func = ext_to_load[ext]
-        modular_project[file_name] = load_func(read(file_path=file_path))
+        modular_project[file_name] = load_func(read(path=path))
     return modular_project
 
 
@@ -67,7 +80,7 @@ def write_modular_project(project_path: str, modular_project: dict) -> None:
         _, ext = os.path.splitext(file_name)
         dump_func = ext_to_dump[ext]
         write(
-            file_path=os.path.join(project_path, file_name), 
+            path=os.path.join(project_path, file_name), 
             data=dump_func(data),
         )
 
@@ -78,18 +91,24 @@ def to_modular_project(project: dict) -> dict:
     modular_project = {}
     iproject = project["data"]["project"]
 
-    screen_ids = []
-    for screen in iproject["components"]["children"]:
-        screen_id = screen["id"]
-        file_path = f"{screen_id}.json"
-        modular_project[file_path] = screen
-        screen_ids.append(screen_id)
-    iproject["components"]["children"] = screen_ids
+    screen_id_to_name = {}
+    for i, screen in enumerate(iproject["components"]["children"]):
+        screen_name, screen_id = screen["name"], screen["id"]
+        if re.search("[^\w\- ]+", screen_name) is not None:
+            logging.fatal("Encountered invalid screen name.")
+            logging.fatal(f"\tscreen_name = {screen_name}")
+            logging.fatal(f"\tscreen_id = {screen_id}")
+            logging.info("The screen name cannot contain special characters besides '-' and '_'.")
+            exit(1)
+        path = f"{screen_name}.{screen_id}.json"
+        modular_project[path] = screen
+        iproject["components"]["children"][i] = os.path.splitext(path)[0]
+        screen_id_to_name[screen_id] = screen_name
 
     for screen_id in iproject["blockly"]:
         if "xml" in iproject["blockly"][screen_id]:
-            file_path = f"{screen_id}.xml"
-            modular_project[file_path] = iproject["blockly"][screen_id]["xml"]
+            path = f"{screen_id_to_name[screen_id]}.{screen_id}.xml"
+            modular_project[path] = iproject["blockly"][screen_id]["xml"]
             iproject["blockly"][screen_id]["xml"] = ""
     
     modular_project["meta.json"] = project
@@ -103,13 +122,14 @@ def from_modular_project(modular_project: dict) -> dict:
     del modular_project["meta.json"]
 
     iproject = project["data"]["project"]
-    for file_path, data in modular_project.items():
-        screen_id, ext = os.path.splitext(os.path.basename(file_path))
+    for path, data in modular_project.items():
+        root, ext = os.path.splitext(os.path.basename(path))
         assert ext in [".json", ".xml"]
         if ext == ".json":
-            idx = iproject["components"]["children"].index(screen_id)
+            idx = iproject["components"]["children"].index(root)
             iproject["components"]["children"][idx] = data
         elif ext == ".xml":
+            screen_id = root.split(".")[1]
             iproject["blockly"][screen_id]["xml"] = data
     
     return project
@@ -201,16 +221,24 @@ def build_push_request(project_id: str, project: dict, config: dict) -> dict:
     }
 
 
-def pull(project_id: str, file_path: str, modular: bool, clean: bool) -> None:
+def safe_clean_path(path: str) -> None:
+    print("After this operation, the following files will be permanently deleted.")
+    for f in glob.glob(os.path.join(path, "*")):
+        print("\t", f)
+    ans = input("Do you want to continue [Y/n]? ").lower()
+    if ans != "y": exit(0)
+    shutil.rmtree(path=path, ignore_errors=True)
+    os.makedirs(path, exist_ok=True)
+
+
+def pull(project_id: str, path: str, modular: bool, clean: bool) -> None:
     logging.debug("Pulling with")
     logging.debug(f"\tproject_id = {project_id}")
-    logging.debug(f"\tfile_path = {file_path}")
+    logging.debug(f"\tpath = {path}")
     logging.debug(f"\tmodular = {modular}")
     logging.debug(f"\tclean = {clean}")
-
-    assert not (modular and not clean)
     
-    config = read_config()
+    config = safe_read_config()
     logging.debug("Loaded configuration data")
     logging.debug(f"\tconfig = {config}")
 
@@ -225,32 +253,40 @@ def pull(project_id: str, file_path: str, modular: bool, clean: bool) -> None:
     project = load_json(r.content)
     logging.debug(f"\tproject = {project}")
 
+    if "errors" in project:
+        logging.fatal("Failed to download Thunkable project.")
+        logging.info("The project_id might be invalid. Check that the project_id is valid.")
+        logging.info("The thunk_token might have expired. Reset the thunk_token.")
+        exit(1)
+
     if clean:
         project = to_clean_project(project=project)
         logging.debug("Cleaned project")
         logging.debug(f"\tproject = {project}")
 
+    safe_clean_path(path=path)
+
     if modular:
         modular_project = to_modular_project(project=project)
         logging.debug("Built modular project")
         logging.debug(f"\tmodular_project = {modular_project}")
-        write_modular_project(modular_project=modular_project, project_path=file_path)
+        write_modular_project(modular_project=modular_project, project_path=path)
     else:
-        write(file_path=file_path, data=dump_json(project))
+        write(path=path, data=dump_json(project))
 
 
-def push(project_id: str, file_path: str, modular: bool) -> None:
+def push(project_id: str, path: str, modular: bool) -> None:
     logging.debug("Pushing with")
     logging.debug(f"\tproject_id = {project_id}")
-    logging.debug(f"\tfile_path = {file_path}")
+    logging.debug(f"\tpath = {path}")
     logging.debug(f"\tmodular = {modular}")
 
-    config = read_config()
+    config = safe_read_config()
     logging.debug("Loaded configuration data")
     logging.debug(f"\tconfig = {config}")
 
     if modular:
-        modular_project = read_modular_project(project_path=file_path)
+        modular_project = read_modular_project(project_path=path)
         logging.debug("Loaded modular project")
         logging.debug(f"\tmodular_project = {modular_project}")
 
@@ -258,7 +294,7 @@ def push(project_id: str, file_path: str, modular: bool) -> None:
         logging.debug("Built project")
         logging.debug(f"\tproject = {project}")
     else:
-        project = load_json(read(file_path=file_path))
+        project = load_json(read(path=path))
         logging.debug("Loaded project")
         logging.debug(f"\tproject = {project}")
     
@@ -282,21 +318,21 @@ def configure(variable: str, value: str) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="Thunkable Download Tool",
-        description="Download Thunkable programs."
+        prog="Thunkd",
+        description="Pull and push Thunkable projects."
     )
-    subparsers = parser.add_subparsers()
+    subparsers = parser.add_subparsers(metavar="command", required=True)
 
     pull_parser = subparsers.add_parser("pull")
     pull_parser.add_argument("project_id", type=str)
-    pull_parser.add_argument("file_path", type=str)
+    pull_parser.add_argument("path", type=str)
     pull_parser.add_argument('--modular', required=False, default=True, action=argparse.BooleanOptionalAction)
     pull_parser.add_argument('--clean', required=False, default=True, action=argparse.BooleanOptionalAction)
     pull_parser.set_defaults(func=pull)
 
     push_parser = subparsers.add_parser("push")
     push_parser.add_argument("project_id", type=str)
-    push_parser.add_argument("file_path", type=str)
+    push_parser.add_argument("path", type=str)
     push_parser.add_argument('--modular', required=False, default=True, action=argparse.BooleanOptionalAction)
     push_parser.set_defaults(func=push)
 
@@ -317,5 +353,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     main()
