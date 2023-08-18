@@ -282,8 +282,8 @@ def configure(variable: str, value: str) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="Thunkable Download Tool",
-        description="Download Thunkable programs."
+        prog="Thunkd",
+        description="Pull and push Thunkable projects."
     )
     subparsers = parser.add_subparsers()
 
