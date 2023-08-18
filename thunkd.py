@@ -134,7 +134,7 @@ def delete_path_if_exists(d: dict, path: list):
     delete_path_if_exists(d=d[path[0]], path=path[1:])
 
 
-def clean_project(project: dict) -> dict:
+def to_clean_project(project: dict) -> dict:
     project = copy.deepcopy(project)
     dirty_paths = [
         ["data", "user"],
