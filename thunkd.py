@@ -41,8 +41,12 @@ def build_config_path() -> str:
 
 def read_config() -> dict:
     path = build_config_path()
+    return load_json(read(path=path))
+    
+
+def safe_read_config() -> dict:
     try:
-        config = load_json(read(path=path))
+        config = read_config()
         if "thunk_token" not in config: raise
         return config
     except:
@@ -86,17 +90,17 @@ def to_modular_project(project: dict) -> dict:
     modular_project = {}
     iproject = project["data"]["project"]
 
-    screen_ids = []
-    for screen in iproject["components"]["children"]:
-        screen_id = screen["id"]
-        path = f"{screen_id}.json"
+    screen_id_to_name = {}
+    for i, screen in enumerate(iproject["components"]["children"]):
+        screen_name, screen_id = screen["name"], screen["id"]
+        path = f"{screen_name}.{screen_id}.json"
         modular_project[path] = screen
-        screen_ids.append(screen_id)
-    iproject["components"]["children"] = screen_ids
+        iproject["components"]["children"][i] = os.path.splitext(path)[0]
+        screen_id_to_name[screen_id] = screen_name
 
     for screen_id in iproject["blockly"]:
         if "xml" in iproject["blockly"][screen_id]:
-            path = f"{screen_id}.xml"
+            path = f"{screen_id_to_name[screen_id]}.{screen_id}.xml"
             modular_project[path] = iproject["blockly"][screen_id]["xml"]
             iproject["blockly"][screen_id]["xml"] = ""
     
@@ -112,12 +116,13 @@ def from_modular_project(modular_project: dict) -> dict:
 
     iproject = project["data"]["project"]
     for path, data in modular_project.items():
-        screen_id, ext = os.path.splitext(os.path.basename(path))
+        root, ext = os.path.splitext(os.path.basename(path))
         assert ext in [".json", ".xml"]
         if ext == ".json":
-            idx = iproject["components"]["children"].index(screen_id)
+            idx = iproject["components"]["children"].index(root)
             iproject["components"]["children"][idx] = data
         elif ext == ".xml":
+            screen_id = root.split(".")[1]
             iproject["blockly"][screen_id]["xml"] = data
     
     return project
@@ -209,7 +214,7 @@ def build_push_request(project_id: str, project: dict, config: dict) -> dict:
     }
 
 
-def clean_path(path: str) -> None:
+def safe_clean_path(path: str) -> None:
     print("After this operation, the following files will be permanently deleted.")
     for f in glob.glob(os.path.join(path, "*")):
         print("\t", f)
@@ -226,7 +231,7 @@ def pull(project_id: str, path: str, modular: bool, clean: bool) -> None:
     logging.debug(f"\tmodular = {modular}")
     logging.debug(f"\tclean = {clean}")
     
-    config = read_config()
+    config = safe_read_config()
     logging.debug("Loaded configuration data")
     logging.debug(f"\tconfig = {config}")
 
@@ -248,11 +253,11 @@ def pull(project_id: str, path: str, modular: bool, clean: bool) -> None:
         exit(1)
 
     if clean:
-        project = clean_project(project=project)
+        project = to_clean_project(project=project)
         logging.debug("Cleaned project")
         logging.debug(f"\tproject = {project}")
 
-    clean_path(path=path)
+    safe_clean_path(path=path)
 
     if modular:
         modular_project = to_modular_project(project=project)
@@ -269,7 +274,7 @@ def push(project_id: str, path: str, modular: bool) -> None:
     logging.debug(f"\tpath = {path}")
     logging.debug(f"\tmodular = {modular}")
 
-    config = read_config()
+    config = safe_read_config()
     logging.debug("Loaded configuration data")
     logging.debug(f"\tconfig = {config}")
 
