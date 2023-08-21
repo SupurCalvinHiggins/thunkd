@@ -222,11 +222,13 @@ def build_push_request(project_id: str, project: dict, config: dict) -> dict:
 
 
 def safe_clean_path(path: str) -> None:
-    print("After this operation, the following files will be permanently deleted.")
-    for f in glob.glob(os.path.join(path, "*")):
-        print("\t", f)
-    ans = input("Do you want to continue [Y/n]? ").lower()
-    if ans != "y": exit(0)
+    files = glob.glob(os.path.join(path, "*"))
+    if len(files) != 0:
+        print("After this operation, the following files will be permanently deleted.")
+        for f in files:
+            print("\t", f)
+        ans = input("Do you want to continue [Y/n]? ").lower()
+        if ans != "y": exit(0)
     shutil.rmtree(path=path, ignore_errors=True)
     os.makedirs(path, exist_ok=True)
 
@@ -254,7 +256,7 @@ def pull(project_id: str, path: str, modular: bool, clean: bool) -> None:
     logging.debug(f"\tproject = {project}")
 
     if "errors" in project:
-        logging.fatal("Failed to download Thunkable project.")
+        logging.fatal("Failed to pull Thunkable project.")
         logging.info("The project_id might be invalid. Check that the project_id is valid.")
         logging.info("The thunk_token might have expired. Reset the thunk_token.")
         exit(1)
@@ -305,6 +307,13 @@ def push(project_id: str, path: str, modular: bool) -> None:
     r = requests.post(**request)
     logging.debug("Sent request")
     logging.debug(f"\tr.content = {r.content}")
+
+    rsp = load_json(r.content)
+    if "hash" not in rsp:
+        logging.fatal("Failed to push Thunkable project.")
+        logging.info("The project_id might be invalid. Check that the project_id is valid.")
+        logging.info("The thunk_token might have expired. Reset the thunk_token.")
+        exit(1)
 
 
 def configure(variable: str, value: str) -> None:
