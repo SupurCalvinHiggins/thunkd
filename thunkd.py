@@ -222,11 +222,13 @@ def build_push_request(project_id: str, project: dict, config: dict) -> dict:
 
 
 def safe_clean_path(path: str) -> None:
-    print("After this operation, the following files will be permanently deleted.")
-    for f in glob.glob(os.path.join(path, "*")):
-        print("\t", f)
-    ans = input("Do you want to continue [Y/n]? ").lower()
-    if ans != "y": exit(0)
+    files = glob.glob(os.path.join(path, "*"))
+    if len(files) != 0:
+        print("After this operation, the following files will be permanently deleted.")
+        for f in files:
+            print("\t", f)
+        ans = input("Do you want to continue [Y/n]? ").lower()
+        if ans != "y": exit(0)
     shutil.rmtree(path=path, ignore_errors=True)
     os.makedirs(path, exist_ok=True)
 
