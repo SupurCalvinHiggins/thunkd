@@ -4,17 +4,17 @@ from thunkd import *
 
 @pytest.fixture
 def project() -> dict:
-    return load_json(read(path="test_data/project.json"))
+    return load_json(Path("test_data/project.json").read_text())
 
 
 @pytest.fixture
 def clean_project() -> dict:
-    return load_json(read(path="test_data/clean_project.json"))
+    return load_json(Path("test_data/clean_project.json").read_text())
 
 
 @pytest.fixture
 def modular_project() -> dict:
-    return read_modular_project(project_path="test_data/modular_project")
+    return read_modular_project(project_path=Path("test_data/modular_project"))
 
 
 def test_to_clean_project(project: dict, clean_project: dict) -> None:

@@ -1,116 +1,237 @@
-import os
+"""
+Thunkable Download Tool
+
+thunkd.py
+Core logic to download projects from Thunkable.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the “Software”), to deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+Software.
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+disclaimer.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"""
+
+
 import re
 import copy
 import json
-import glob
 import shutil
 import logging
 import argparse
 import requests
+from pathlib import Path
+
+
+CONFIG_PATH = Path(__file__).parent.resolve().joinpath("thunkd_py_config.json")
 
 
 def dump_json(data: dict) -> str:
+    """
+    Convert a dictionary to a formatted JSON string.
+
+    Parameters
+    ----------
+    data: The dictionary.
+
+    Returns
+    -------
+    The formatted JSON string.
+    """
     return json.dumps(data, indent=4)
 
 
 def dump_xml(data: str) -> str:
+    """
+    Convert a XML string to a formatted XML string. Right now, this does not apply any formatting. This is because the
+    XML parsers I tried produced formatted output strings that were no longer compatible with the Thunkable backend.
+    However, if you can find a way to robustly format the XML that works with Thunkable, just update this function and
+    the formatting will be applied to the downloaded XML files.
+
+    Parameters
+    ----------
+    data: The XML string.
+
+    Returns
+    -------
+    The formatted XML string.
+    """
     return data
 
 
-def load_json(data: str) -> str:
+def load_json(data: str) -> dict:
+    """
+    Convert a formatted JSON string to a dictionary.
+
+    Parameters
+    ----------
+    data: The formatted JSON string.
+
+    Returns
+    -------
+    The dictionary.
+    """
     return json.loads(data)
 
 
 def load_xml(data: str) -> str:
+    """
+    Convert a formatted XML string to a XML string.
+
+    Parameters
+    ----------
+    data: The formatted XML string.
+
+    Returns
+    -------
+    The XML string.
+    """
     return data
-
-
-def write(path: str, data: str) -> None:
-    with open(path, "w") as f:
-        f.write(data)
-
-
-def read(path: str) -> str:
-    with open(path, "r") as f:
-        return f.read()
-
-
-def build_config_path() -> str:
-    script_dir = os.path.realpath(os.path.dirname(__file__))
-    return os.path.join(script_dir, "thunkd_py_config.json")
-
-
-def read_config() -> dict:
-    path = build_config_path()
-    return load_json(read(path=path))
     
 
 def safe_read_config() -> dict:
+    """
+    Returns the configuration as a dictionary. If the configuration cannot be loaded, an error message is printed
+    and the program exits with error code 1.
+
+    Returns
+    -------
+    The configuration.
+    """
     try:
-        config = read_config()
-        if "thunk_token" not in config: raise
+        config = load_json(CONFIG_PATH.read_text())
+        if "thunk_token" not in config:
+            logging.fatal("The thunk_token is not set. Set the thunk_token")
+            exit(1)
         return config
-    except:
-        logging.fatal("Failed to load the configuration file.")
+    except OSError:
+        logging.fatal("The configuration file does not exist.")
+        logging.info("The configuration file might be in the wrong directory.")
+        logging.info("The thunk_token might not be set. Set the thunk_token.")
+        exit(1)
+    except json.JSONDecodeError:
+        logging.fatal("The configuration file is not valid JSON.")
         logging.info("The thunk_token might not be set. Set the thunk_token.")
         exit(1)
 
 
-def write_config(config: dict) -> None:
-    path = build_config_path()
-    write(path=path, data=dump_json(config))
+def read_modular_project(project_path: Path) -> dict:
+    """
+    Load a modular project from disk. A modular project is a mapping from file names to file content.
 
+    Parameters
+    ----------
+    project_path: The modular project path.
 
-def read_modular_project(project_path: str) -> dict:
+    Returns
+    -------
+    The modular project.
+    """
     modular_project = {}
-    ext_to_load = {".json": load_json, ".xml": load_xml}
-    search_path = os.path.join(project_path, "*.*")
-    for path in glob.glob(search_path):
-        file_name = os.path.basename(path)
-        _, ext = os.path.splitext(file_name)
-        load_func = ext_to_load[ext]
-        modular_project[file_name] = load_func(read(path=path))
+    suffix_to_load = {".json": load_json, ".xml": load_xml}
+    # Map the name of each file in the project path to its contents as a Python object.
+    # TODO: This glob does not always work since directories can contain the '.' character.
+    for path in project_path.glob("*.*"):
+        load_func = suffix_to_load[path.suffix]
+        modular_project[path.name] = load_func(path.read_text())
     return modular_project
 
 
-def write_modular_project(project_path: str, modular_project: dict) -> None:
-    os.makedirs(project_path, exist_ok=True)
-    ext_to_dump = {".json": dump_json, ".xml": dump_xml}
-    for file_name, data in modular_project.items():
-        _, ext = os.path.splitext(file_name)
-        dump_func = ext_to_dump[ext]
-        write(
-            path=os.path.join(project_path, file_name), 
-            data=dump_func(data),
-        )
+def write_modular_project(project_path: Path, modular_project: dict) -> None:
+    """
+    Write a modular project to disk. A modular project is a mapping from file names to file content.
+
+    Parameters
+    ----------
+    project_path: The modular project path.
+    modular_project: The modular project.
+
+    Returns
+    -------
+    None
+    """
+    project_path.mkdir(exist_ok=True)
+    suffix_to_dump = {".json": dump_json, ".xml": dump_xml}
+    # Write the data mapped to each name to disk.
+    for name, data in modular_project.items():
+        dump_func = suffix_to_dump[Path(name).suffix]
+        project_path.joinpath(name).write_text(dump_func(data))
 
 
 def to_modular_project(project: dict) -> dict:
+    """
+    Convert a Thunkable project to a modular project. This maps "meta.json" to metadata,
+    "<screen_name>.<screen_id>.json" to the UI elements for that screen and "<screen_name>.<screen_id>.xml" to
+    the block code for that screen.
+
+    Parameters
+    ----------
+    project: The Thunkable project.
+
+    Returns
+    -------
+    The modular project.
+    """
+
+    # Ensure there are no unexpected side effects.
     project = copy.deepcopy(project)
 
     modular_project = {}
+
+    # The "iproject" is the portion of the Thunkable project that contains the data we are interested in.
     iproject = project["data"]["project"]
 
+    # TODO: This is a bit of a hack.
+    # We map the ID of each screen to its name so that we can produce the correct file name when extracting the blocks.
     screen_id_to_name = {}
+
+    # Extract the UI elements.
     for i, screen in enumerate(iproject["components"]["children"]):
         screen_name, screen_id = screen["name"], screen["id"]
+
+        # Since we are using the screen name in the output file name, we need to verify that the screen name will be
+        # a valid part of the file name.
         if re.search("[^\w\- ]+", screen_name) is not None:
             logging.fatal("Encountered invalid screen name.")
             logging.fatal(f"\tscreen_name = {screen_name}")
             logging.fatal(f"\tscreen_id = {screen_id}")
             logging.info("The screen name cannot contain special characters besides '-' and '_'.")
             exit(1)
+
+        # Add the screen to the modular project.
         path = f"{screen_name}.{screen_id}.json"
         modular_project[path] = screen
-        iproject["components"]["children"][i] = os.path.splitext(path)[0]
+
+        # We cannot just delete the screen from the list of screen since they are order dependent. So instead overwrite
+        # the screen with a "pointer" to the screen file.
+        # TODO: There are better ways to do this. For example, prepend the screen index to the screen file names so that
+        # they are loaded from disk in the correct order. This eliminates the need for the "pointers".
+        iproject["components"]["children"][i] = f"{screen_name}.{screen_id}"
+
+        # Update the mapping used when extracting the blocks.
         screen_id_to_name[screen_id] = screen_name
 
+    # Extract the blocks.
     for screen_id in iproject["blockly"]:
+        # Ensure that there are actually blocks to extract.
         if "xml" in iproject["blockly"][screen_id]:
+            # Add the blocks to the modular project.
             path = f"{screen_id_to_name[screen_id]}.{screen_id}.xml"
             modular_project[path] = iproject["blockly"][screen_id]["xml"]
+
+            # Delete the blocks.
             iproject["blockly"][screen_id]["xml"] = ""
-    
+
+    # Everything that is leftover is metadata.
     modular_project["meta.json"] = project
     return modular_project
 
@@ -122,15 +243,18 @@ def from_modular_project(modular_project: dict) -> dict:
     del modular_project["meta.json"]
 
     iproject = project["data"]["project"]
-    for path, data in modular_project.items():
-        root, ext = os.path.splitext(os.path.basename(path))
-        assert ext in [".json", ".xml"]
-        if ext == ".json":
-            idx = iproject["components"]["children"].index(root)
+    for name, data in modular_project.items():
+        path = Path(name)
+        if path.suffix == ".json":
+            idx = iproject["components"]["children"].index(path.stem)
             iproject["components"]["children"][idx] = data
-        elif ext == ".xml":
-            screen_id = root.split(".")[1]
+        elif path.suffix == ".xml":
+            screen_id = path.stem.split(".")[1]
             iproject["blockly"][screen_id]["xml"] = data
+        else:
+            logging.fatal("Invalid file type encountered in modular project.")
+            logging.info(f"\t\tname = {name}")
+            exit(1)
     
     return project
 
@@ -221,19 +345,19 @@ def build_push_request(project_id: str, project: dict, config: dict) -> dict:
     }
 
 
-def safe_clean_path(path: str) -> None:
-    files = glob.glob(os.path.join(path, "*"))
-    if len(files) != 0:
+def safe_clean_path(path: Path) -> None:
+    if not path.listdir():
         print("After this operation, the following files will be permanently deleted.")
-        for f in files:
+        for f in path.listdir():
             print("\t", f)
         ans = input("Do you want to continue [Y/n]? ").lower()
-        if ans != "y": exit(0)
+        if ans != "y":
+            exit(0)
     shutil.rmtree(path=path, ignore_errors=True)
-    os.makedirs(path, exist_ok=True)
+    path.mkdir(exists_ok=True)
 
 
-def pull(project_id: str, path: str, modular: bool, clean: bool) -> None:
+def pull(project_id: str, path: Path, modular: bool, clean: bool) -> None:
     logging.debug("Pulling with")
     logging.debug(f"\tproject_id = {project_id}")
     logging.debug(f"\tpath = {path}")
@@ -274,7 +398,7 @@ def pull(project_id: str, path: str, modular: bool, clean: bool) -> None:
         logging.debug(f"\tmodular_project = {modular_project}")
         write_modular_project(modular_project=modular_project, project_path=path)
     else:
-        write(path=path, data=dump_json(project))
+        path.write_text(dump_json(project))
 
 
 def push(project_id: str, path: str, modular: bool) -> None:
@@ -296,7 +420,7 @@ def push(project_id: str, path: str, modular: bool) -> None:
         logging.debug("Built project")
         logging.debug(f"\tproject = {project}")
     else:
-        project = load_json(read(path=path))
+        project = load_json(path.read_text())
         logging.debug("Loaded project")
         logging.debug(f"\tproject = {project}")
     
@@ -318,11 +442,11 @@ def push(project_id: str, path: str, modular: bool) -> None:
 
 def configure(variable: str, value: str) -> None:
     try:
-        config = read_config()
+        config = load_json(CONFIG_PATH.read_text())
     except Exception as e:
         config = {}
     config[variable] = value
-    write_config(config=config)
+    CONFIG_PATH.write_text(dump_json(config))
 
 
 def build_parser() -> argparse.ArgumentParser:
