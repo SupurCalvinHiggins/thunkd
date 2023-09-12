@@ -346,15 +346,16 @@ def build_push_request(project_id: str, project: dict, config: dict) -> dict:
 
 
 def safe_clean_path(path: Path) -> None:
-    if not path.listdir():
+    path.mkdir(exist_ok=True)
+    if list(path.iterdir()):
         print("After this operation, the following files will be permanently deleted.")
-        for f in path.listdir():
+        for f in path.iterdir():
             print("\t", f)
         ans = input("Do you want to continue [Y/n]? ").lower()
         if ans != "y":
             exit(0)
     shutil.rmtree(path=path, ignore_errors=True)
-    path.mkdir(exists_ok=True)
+    path.mkdir(exist_ok=True)
 
 
 def pull(project_id: str, path: Path, modular: bool, clean: bool) -> None:
@@ -458,14 +459,14 @@ def build_parser() -> argparse.ArgumentParser:
 
     pull_parser = subparsers.add_parser("pull")
     pull_parser.add_argument("project_id", type=str)
-    pull_parser.add_argument("path", type=str)
+    pull_parser.add_argument("path", type=Path)
     pull_parser.add_argument('--modular', required=False, default=True, action=argparse.BooleanOptionalAction)
     pull_parser.add_argument('--clean', required=False, default=True, action=argparse.BooleanOptionalAction)
     pull_parser.set_defaults(func=pull)
 
     push_parser = subparsers.add_parser("push")
     push_parser.add_argument("project_id", type=str)
-    push_parser.add_argument("path", type=str)
+    push_parser.add_argument("path", type=Path)
     push_parser.add_argument('--modular', required=False, default=True, action=argparse.BooleanOptionalAction)
     push_parser.set_defaults(func=push)
 
