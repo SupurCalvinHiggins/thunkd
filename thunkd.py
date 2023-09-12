@@ -207,6 +207,13 @@ def to_modular_project(project: dict) -> dict:
             logging.info("The screen name cannot contain special characters besides '-' and '_'.")
             exit(1)
 
+        if "Navigator" in screen_name:
+            logging.fatal("Encountered Navigator.")
+            logging.info("Navigators are not supported. Please remove the Navigator.")
+            logging.info("Advanced users only: Navigators are supported with the --no-modular option.")
+            logging.info("If you want to help add support for Navigators, email me!")
+            exit(1)
+
         # Add the screen to the modular project.
         path = f"{screen_name}.{screen_id}.json"
         modular_project[path] = screen
@@ -399,7 +406,7 @@ def pull(project_id: str, path: Path, modular: bool, clean: bool) -> None:
         logging.debug(f"\tmodular_project = {modular_project}")
         write_modular_project(modular_project=modular_project, project_path=path)
     else:
-        path.write_text(dump_json(project))
+        path.joinpath("meta.json").write_text(dump_json(project))
 
 
 def push(project_id: str, path: str, modular: bool) -> None:
@@ -421,7 +428,7 @@ def push(project_id: str, path: str, modular: bool) -> None:
         logging.debug("Built project")
         logging.debug(f"\tproject = {project}")
     else:
-        project = load_json(path.read_text())
+        project = load_json(path.joinpath("meta.json").read_text())
         logging.debug("Loaded project")
         logging.debug(f"\tproject = {project}")
     
