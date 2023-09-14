@@ -3,9 +3,23 @@ Simple command line tool to pull and push projects to and from Thunkable.
 
 ## Installation
 
-Thunkd requires Python 3.8, 3.9, 3.10 or 3.11. After installing one of these version of Python, execute the command
+Thunkd requires Python 3.8, 3.9, 3.10 or 3.11. Python can be installed from [here](https://www.python.org/). Verify that the Python version by executing
 ```
-pip install -r requirements.txt
+python --version
+```
+If the Python version is incorrect, try
+```
+python3 --version
+```
+
+Pip is required to install the required dependencies. To install pip, execute
+```
+python -m ensurepip
+```
+
+After installing pip, execute the command
+```
+python -m pip install -r requirements.txt
 ```
 in the top level of the repository to install the other dependencies.
 
