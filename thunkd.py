@@ -253,7 +253,8 @@ def from_modular_project(modular_project: dict) -> dict:
                 if screen["id"] == str(path.stem).split(".")[-1]:
                     break
             else:
-                print("error")
+                logging.fatal("Encountered unexpected JSON file.")
+                logging.info(f"\t\tpath = {path}")
                 exit(1)
             screen |= data
         elif path.suffix == ".xml":
