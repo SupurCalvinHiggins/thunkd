@@ -256,7 +256,7 @@ def from_modular_project(modular_project: dict) -> dict:
                 logging.fatal("Encountered unexpected JSON file.")
                 logging.info(f"\t\tpath = {path}")
                 exit(1)
-            screen |= data
+            screen.update(data)
         elif path.suffix == ".xml":
             screen_id = path.stem.split(".")[1]
             iproject["blockly"][screen_id]["xml"] = data
