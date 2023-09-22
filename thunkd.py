@@ -203,13 +203,13 @@ def to_modular_project(project: dict) -> dict:
     
     for i, screen in enumerate(screens):
         screen_name, screen_id = screen["name"], screen["id"]
-        if re.search("[^\w\- ]+", screen_name) is not None:
+        if re.search(r"[^\w\- ]+", screen_name) is not None:
             logging.fatal("Encountered invalid screen name.")
             logging.fatal(f"\tscreen_name = {screen_name}")
             logging.fatal(f"\tscreen_id = {screen_id}")
             logging.info("The screen name cannot contain special characters besides '-' and '_'.")
             exit(1)
-        path = f"{str(i).zfill(3)}.{screen['name']}.{screen['id']}.json"
+        path = f"{screen['name']}.{screen['id']}.json"
         modular_project[path] = copy.deepcopy(screen)
         screen.clear()
         screen["id"] = screen_id
@@ -241,7 +241,7 @@ def from_modular_project(modular_project: dict) -> dict:
 
     screens = []
     for screen_or_nav in iproject["components"]["children"]:
-        if "Navigator" in screen_or_nav["name"]:
+        if "name" in screen_or_nav and "Navigator" in screen_or_nav["name"]:
             screens.extend(screen_or_nav["children"])
         else:
             screens.append(screen_or_nav)

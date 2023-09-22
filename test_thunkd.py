@@ -22,6 +22,8 @@ def test_to_clean_project(project: dict, clean_project: dict) -> None:
 
 
 def test_to_modular_project(clean_project: dict, modular_project: dict) -> None:
+    print(modular_project, flush=True)
+    print(to_modular_project(project=clean_project), flush=True)
     assert to_modular_project(project=clean_project) == modular_project
 
 
