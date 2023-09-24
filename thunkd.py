@@ -194,37 +194,25 @@ def to_modular_project(project: dict) -> dict:
     # We map the ID of each screen to its name so that we can produce the correct file name when extracting the blocks.
     screen_id_to_name = {}
 
-    # Extract the UI elements.
-    for i, screen in enumerate(iproject["components"]["children"]):
+    screens = []
+    for screen_or_nav in iproject["components"]["children"]:
+        if "Navigator" in screen_or_nav["name"]:
+            screens.extend(screen_or_nav["children"])
+        else:
+            screens.append(screen_or_nav)
+    
+    for i, screen in enumerate(screens):
         screen_name, screen_id = screen["name"], screen["id"]
-
-        # Since we are using the screen name in the output file name, we need to verify that the screen name will be
-        # a valid part of the file name.
-        if re.search("[^\w\- ]+", screen_name) is not None:
+        if re.search(r"[^\w\- ]+", screen_name) is not None:
             logging.fatal("Encountered invalid screen name.")
             logging.fatal(f"\tscreen_name = {screen_name}")
             logging.fatal(f"\tscreen_id = {screen_id}")
             logging.info("The screen name cannot contain special characters besides '-' and '_'.")
             exit(1)
-
-        if "Navigator" in screen_name:
-            logging.fatal("Encountered Navigator.")
-            logging.info("Navigators are not supported. Please remove the Navigator.")
-            logging.info("Advanced users only: Navigators are supported with the --no-modular option.")
-            logging.info("If you want to help add support for Navigators, email me!")
-            exit(1)
-
-        # Add the screen to the modular project.
-        path = f"{screen_name}.{screen_id}.json"
-        modular_project[path] = screen
-
-        # We cannot just delete the screen from the list of screen since they are order dependent. So instead overwrite
-        # the screen with a "pointer" to the screen file.
-        # TODO: There are better ways to do this. For example, prepend the screen index to the screen file names so that
-        # they are loaded from disk in the correct order. This eliminates the need for the "pointers".
-        iproject["components"]["children"][i] = f"{screen_name}.{screen_id}"
-
-        # Update the mapping used when extracting the blocks.
+        path = f"{screen['name']}.{screen['id']}.json"
+        modular_project[path] = copy.deepcopy(screen)
+        screen.clear()
+        screen["id"] = screen_id
         screen_id_to_name[screen_id] = screen_name
 
     # Extract the blocks.
@@ -250,11 +238,25 @@ def from_modular_project(modular_project: dict) -> dict:
     del modular_project["meta.json"]
 
     iproject = project["data"]["project"]
+
+    screens = []
+    for screen_or_nav in iproject["components"]["children"]:
+        if "name" in screen_or_nav and "Navigator" in screen_or_nav["name"]:
+            screens.extend(screen_or_nav["children"])
+        else:
+            screens.append(screen_or_nav)
+
     for name, data in modular_project.items():
         path = Path(name)
         if path.suffix == ".json":
-            idx = iproject["components"]["children"].index(path.stem)
-            iproject["components"]["children"][idx] = data
+            for screen in screens:
+                if screen["id"] == str(path.stem).split(".")[-1]:
+                    break
+            else:
+                logging.fatal("Encountered unexpected JSON file.")
+                logging.info(f"\t\tpath = {path}")
+                exit(1)
+            screen.update(data)
         elif path.suffix == ".xml":
             screen_id = path.stem.split(".")[1]
             iproject["blockly"][screen_id]["xml"] = data

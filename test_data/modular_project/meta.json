@@ -41,9 +41,15 @@
             ],
             "components": {
                 "children": [
-                    "Screen1.8aae17e5-5f0f-4c08-b479-0e09acb5675f",
-                    "Screen2.34e0ccff-a37a-4dff-82ea-e9cb1e48c6db",
-                    "Screen3.dbe92468-e707-42b9-975d-2c13b04085c2"
+                    {
+                        "id": "8aae17e5-5f0f-4c08-b479-0e09acb5675f"
+                    },
+                    {
+                        "id": "34e0ccff-a37a-4dff-82ea-e9cb1e48c6db"
+                    },
+                    {
+                        "id": "dbe92468-e707-42b9-975d-2c13b04085c2"
+                    }
                 ]
             },
             "figmaComponents": {},
