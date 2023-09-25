@@ -386,6 +386,12 @@ def pull(project_id: str, path: Path, modular: bool, clean: bool) -> None:
     logging.debug("Sent request")
     logging.debug(f"\tr.content = {r.content}")
 
+    if b"project" not in r.content:
+        logging.fatal("Failed to pull Thunkable project.")
+        logging.info("The project_id might be invalid. Check that the project_id is valid.")
+        logging.info("The thunk_token might have expired. Reset the thunk_token.")
+        exit(1)
+    
     project = load_json(r.content)
     logging.debug(f"\tproject = {project}")
 
@@ -442,8 +448,7 @@ def push(project_id: str, path: str, modular: bool) -> None:
     logging.debug("Sent request")
     logging.debug(f"\tr.content = {r.content}")
 
-    rsp = load_json(r.content)
-    if "hash" not in rsp:
+    if b"hash" not in r.content:
         logging.fatal("Failed to push Thunkable project.")
         logging.info("The project_id might be invalid. Check that the project_id is valid.")
         logging.info("The thunk_token might have expired. Reset the thunk_token.")
