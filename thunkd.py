@@ -141,6 +141,10 @@ def read_modular_project(project_path: Path) -> dict:
     # Map the name of each file in the project path to its contents as a Python object.
     # TODO: This glob does not always work since directories can contain the '.' character.
     for path in project_path.glob("*.*"):
+        if path.suffix not in suffix_to_load:
+            logging.info("Invalid file encountered in modular project")
+            logging.info(f"\tpath = {path}")
+            continue
         load_func = suffix_to_load[path.suffix]
         modular_project[path.name] = load_func(path.read_text())
     return modular_project
