@@ -223,6 +223,10 @@ def to_modular_project(project: dict) -> dict:
     for screen_id in iproject["blockly"]:
         # Ensure that there are actually blocks to extract.
         if "xml" in iproject["blockly"][screen_id]:
+            # If the screen no longer exists, ignore the XML.
+            if screen_id not in screen_id_to_name:
+                # TODO: Clean the dead JSON.
+                continue
             # Add the blocks to the modular project.
             path = f"{screen_id_to_name[screen_id]}.{screen_id}.xml"
             modular_project[path] = iproject["blockly"][screen_id]["xml"]
