@@ -200,7 +200,7 @@ def to_modular_project(project: dict) -> dict:
 
     screens = []
     for screen_or_nav in iproject["components"]["children"]:
-        if "Navigator" in screen_or_nav["name"]:
+        if "Navigator" in screen_or_nav["type"]:
             screens.extend(screen_or_nav["children"])
         else:
             screens.append(screen_or_nav)
