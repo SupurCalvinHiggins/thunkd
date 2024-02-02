@@ -427,7 +427,7 @@ def pull(project_id: str, path: Path, modular: bool, clean: bool) -> None:
 
 def push(project_id: str, path: str, modular: bool) -> None:
 
-    if input("Are you sure you want to push? (Y/n").lower() != "y":
+    if input("Are you sure you want to push [Y/n]? ").lower() != "y":
         print("Push cancelled.")
         exit(0)
     
